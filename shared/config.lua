@@ -66,7 +66,7 @@ Config.Examples = {
       enabled = true,
       type = 9,
       textureDict = 'mod_icon',
-      textureName = 'garage_icon',
+      textureName = 'garage',
       rotation = vec3(90.0, 0.0, 0.0),
       size = vec3(0.75, 0.75, 0.75),
       color = { r = 255, g = 255, b = 255, a = 230 },
