@@ -42,17 +42,18 @@ local function mergeMarkerConfig(marker)
   end
 
   return {
-    enabled = marker.enabled ~= nil and marker.enabled == true or defaults.enabled == true,
+    enabled = MZInteractLogic.ResolveBoolean(marker.enabled, defaults.enabled),
     type = markerType,
     textureDict = marker.textureDict,
     textureName = marker.textureName,
     rotation = rotation,
+    offset = marker.offset,
     size = marker.size or defaults.size or vec3(0.35, 0.35, 0.35),
     color = clampColor(marker.color or defaults.color),
-    rotate = marker.rotate ~= nil and marker.rotate == true or defaults.rotate == true,
-    bobUpAndDown = marker.bobUpAndDown ~= nil and marker.bobUpAndDown == true or defaults.bobUpAndDown == true,
-    faceCamera = marker.faceCamera ~= nil and marker.faceCamera == true or defaults.faceCamera == true,
-    drawOnEnts = marker.drawOnEnts ~= nil and marker.drawOnEnts == true or defaults.drawOnEnts == true
+    rotate = MZInteractLogic.ResolveBoolean(marker.rotate, defaults.rotate),
+    bobUpAndDown = MZInteractLogic.ResolveBoolean(marker.bobUpAndDown, defaults.bobUpAndDown),
+    faceCamera = MZInteractLogic.ResolveBoolean(marker.faceCamera, defaults.faceCamera),
+    drawOnEnts = MZInteractLogic.ResolveBoolean(marker.drawOnEnts, defaults.drawOnEnts)
   }
 end
 
@@ -74,7 +75,7 @@ local function requestTextureDictOnce(textureDict)
 end
 
 function MZInteractMarkers.draw(point)
-  if type(point) ~= 'table' or not point.coords then
+  if type(point) ~= 'table' or not point.coords or point.marker == false then
     return
   end
 
@@ -95,9 +96,9 @@ function MZInteractMarkers.draw(point)
 
   DrawMarker(
     marker.type,
-    point.coords.x,
-    point.coords.y,
-    point.coords.z,
+    point.coords.x + (tonumber(marker.offset and (marker.offset.x or marker.offset[1])) or 0.0),
+    point.coords.y + (tonumber(marker.offset and (marker.offset.y or marker.offset[2])) or 0.0),
+    point.coords.z + (tonumber(marker.offset and (marker.offset.z or marker.offset[3])) or 0.0),
     0.0,
     0.0,
     0.0,

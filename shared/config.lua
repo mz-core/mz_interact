@@ -5,12 +5,17 @@ Config.Debug = false
 Config.DefaultKey = 38 -- E
 Config.DefaultDrawDistance = 20.0
 Config.DefaultInteractDistance = 2.0
+Config.InteractTolerance = 0.35
 Config.DefaultLoopSleep = 1000
 Config.NearLoopSleep = 0
 Config.InteractCooldownMs = 800
 
+-- `permission` em um ponto e apenas uma dica visual legada. A autorizacao real
+-- pertence sempre ao evento server-side do resource consumidor. Como o mz_core
+-- expoe as permissoes oficiais no servidor, o client nao deve ocultar pontos por
+-- nao conseguir consultar esse export.
 Config.UseMzCorePermissions = false
-Config.PermissionFallbackAllow = false
+Config.PermissionFallbackAllow = true
 
 -- Optional export names tried when permission exists and mz_core is started.
 -- The system calls each export safely until one returns a non-nil result.
