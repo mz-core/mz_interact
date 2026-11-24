@@ -5,7 +5,7 @@ lua54 'yes'
 name 'mz_interact'
 author 'Mazus'
 description 'Centralized world interaction points for markers, blips and 3D text.'
-version '0.2.0'
+version '0.2.2'
 
 shared_scripts {
   'shared/config.lua',
