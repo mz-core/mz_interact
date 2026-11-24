@@ -6,10 +6,14 @@ Camada client-side para markers, texto 3D e ações próximas.
 
 - o resource consumidor continua dono da regra de negócio;
 - autorização real é sempre revalidada no servidor consumidor;
-- somente o ponto elegível mais próximo recebe texto e input;
+- somente um ponto elegível recebe input; pontos próximos usam uma pequena margem para evitar alternância visual;
 - IDs pertencem ao resource que registrou o ponto;
 - parar um resource remove automaticamente os pontos que ele registrou;
 - `blip` é independente de `marker` e permanece desabilitado quando não solicitado.
+- `marker.hideWhenNear = true` faz o marcador desaparecer gradualmente quando o texto da interação aparece.
+- `text.ui = true` usa o TextUI existente do `mz_lib` quando disponível, com fallback para texto 3D; `text.keyLabel` define a tecla exibida.
+- Com `text.discovery = true`, a NUI mostra um círculo no ponto dentro de `drawDistance` e revela a ação no alcance de interação.
+- Para acompanhar uma entidade, `follow = { entity = handle, bone = 'boot', offset = vec3(...) }` atualiza a posição do ponto enquanto ela existir; o deslocamento é usado quando o osso não existe.
 
 ## API
 

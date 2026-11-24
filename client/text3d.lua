@@ -6,7 +6,7 @@ local function mergeTextConfig(text)
 
   return {
     enabled = MZInteractLogic.ResolveBoolean(text.enabled, defaults.enabled),
-    label = tostring(text.label or defaults.label or '[E] Interagir'),
+    label = (text.ui == true and ('[' .. tostring(text.keyLabel or 'E') .. '] ') or '') .. tostring(text.label or defaults.label or '[E] Interagir'),
     offsetZ = tonumber(text.offsetZ or defaults.offsetZ) or 0.35,
     offset = text.offset,
     scale = tonumber(text.scale or defaults.scale) or 0.32,
@@ -25,7 +25,7 @@ local function measureLineWidth(line, scale, font)
   return EndTextCommandGetWidth(true)
 end
 
-function MZInteractText3D.draw(coords, textConfig)
+function MZInteractText3D.draw(coords, textConfig, opacity, feedback)
   local cfg = mergeTextConfig(textConfig)
   if cfg.enabled ~= true then
     return
@@ -43,7 +43,7 @@ function MZInteractText3D.draw(coords, textConfig)
 
   local camCoords = GetGameplayCamCoords()
   local distance = #(coords - camCoords)
-  local scale = cfg.scale / math.max(distance * 0.22, 1.0)
+  local scale = cfg.scale * (1.0 - 0.04 * (feedback or 0.0)) / math.max(distance * 0.22, 1.0)
   local metricLabel = cfg.label:gsub('~n~', '\n'):gsub('~.-~', '')
   local lineCount, maxLineWidth = 0, 0.0
   for line in (metricLabel .. '\n'):gmatch('(.-)\n') do
@@ -68,7 +68,7 @@ function MZInteractText3D.draw(coords, textConfig)
     tonumber(cfg.background.r) or 0,
     tonumber(cfg.background.g) or 0,
     tonumber(cfg.background.b) or 0,
-    tonumber(cfg.background.a) or 95
+    math.floor((tonumber(cfg.background.a) or 95) * (opacity or 1.0) + 0.5)
   )
 
   SetTextScale(scale, scale)
@@ -79,7 +79,7 @@ function MZInteractText3D.draw(coords, textConfig)
     tonumber(cfg.color.r) or 255,
     tonumber(cfg.color.g) or 255,
     tonumber(cfg.color.b) or 255,
-    tonumber(cfg.color.a) or 230
+    math.floor((tonumber(cfg.color.a) or 230) * (opacity or 1.0) + 0.5)
   )
   SetTextOutline()
   BeginTextCommandDisplayText('STRING')

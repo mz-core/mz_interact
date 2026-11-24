@@ -74,7 +74,7 @@ local function requestTextureDictOnce(textureDict)
   return HasStreamedTextureDictLoaded(textureDict)
 end
 
-function MZInteractMarkers.draw(point)
+function MZInteractMarkers.draw(point, opacity, emphasis)
   if type(point) ~= 'table' or not point.coords or point.marker == false then
     return
   end
@@ -105,13 +105,13 @@ function MZInteractMarkers.draw(point)
     marker.rotation.x or 0.0,
     marker.rotation.y or 0.0,
     marker.rotation.z or 0.0,
-    marker.size.x or 0.35,
-    marker.size.y or 0.35,
-    marker.size.z or 0.35,
+    (marker.size.x or 0.35) * (emphasis or 1.0),
+    (marker.size.y or 0.35) * (emphasis or 1.0),
+    (marker.size.z or 0.35) * (emphasis or 1.0),
     marker.color.r,
     marker.color.g,
     marker.color.b,
-    marker.color.a,
+    math.floor(marker.color.a * (opacity or 1.0) + 0.5),
     marker.bobUpAndDown,
     marker.faceCamera,
     2,

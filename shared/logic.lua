@@ -1,5 +1,20 @@
 MZInteractLogic = MZInteractLogic or {}
 
+function MZInteractLogic.FadeByDistance(distance, limit, range)
+  local progress = math.max(0.0, math.min(1.0, (limit - distance) / range))
+  return progress * progress * (3.0 - 2.0 * progress)
+end
+
+function MZInteractLogic.Approach(value, target, elapsed, duration)
+  local step = math.max(0, elapsed) / duration
+  if value < target then return math.min(target, value + step) end
+  return math.max(target, value - step)
+end
+
+function MZInteractLogic.KeepSelection(selected, closest)
+  return selected and closest and selected.distance <= closest.distance + 0.15
+end
+
 function MZInteractLogic.ResolveBoolean(value, defaultValue)
   if value == nil then return defaultValue == true end
   return value == true
